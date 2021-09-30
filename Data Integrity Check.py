@@ -11,7 +11,7 @@ from difflib import SequenceMatcher
 from multiprocessing import Process
 
 
-# In[3]:
+# In[2]:
 
 
 @dataclass
@@ -25,7 +25,6 @@ class DataIntegrity:
     honorifics = ["Master", "Mr.", "Miss",
                   "Mrs.", "Ms.", "Mx.", "Sir", "Dr."]
     upper_letters = string.ascii_uppercase
-    lower_letters = string.ascii_lowercase
     __finished_dict = {}
     potential_similar = []
     __data_loaded: bool = False
@@ -100,13 +99,13 @@ class DataIntegrity:
             try:
                 if type(workingList) is list: #checks if user input is list
                     workingList.sort() #sort the list in alphabetical order
-                    for upperl, lowerl in zip(self.upper_letters, self.lower_letters):
+                    for letter in self.upper_letters:
                         blank_list = [] #create blank list after each letter is checked against working list
-                        for item in workingList:
-                            if upperl == item[0] or lowerl == item[0]:#compares the uppdercase first letter to the letter from letters
-                                blank_list.append(item)
+                        for value, item in enumerate(workingList):
+                            if letter == item[0].upper():#compares the uppdercase first letter to the letter from letters
+                                blank_list.append(workingList.pop(value))
                             else:
-                                self.__finished_dict[upperl] = blank_list
+                                self.__finished_dict[letter] = blank_list
                 else:
                     return "The item must be a list."
                 return self.__finished_dict
@@ -143,9 +142,9 @@ class DataIntegrity:
             for key in comparison_dictionary:
                 for a,b in itertools.combinations(comparison_dictionary[key], 2):
                     if abs(len(a) - len(b)) in range(strRange):
-                        print(f'{a} compared to {b}')
-                        s = SequenceMatcher(None, a, b)
+                        s = SequenceMatcher(None, a.upper(), b.upper())
                         if s.ratio() >= percentage:
+                            print(f'{a} compared to {b} is {s.ratio()}')
                             self.potential_similar.append(a)
                     else:
                         pass
@@ -166,9 +165,7 @@ if __name__ == "__main__":
     a = DataIntegrity()
     a.load_data('Doctors_Clean.xlsx')
     a.clean_data("Full Name", check_honorifics = True)
-    p = Process(target = a.comparison, args = (5, .9, "Full Name"))
-    p.start()
-    p.join()
+    a.comparison(5, .9, "Full Name")
 
 
 # In[ ]:
@@ -192,11 +189,11 @@ if __name__ == "__main__":
 # In[ ]:
 
 
-a.comparison(5, .90)
+
 
 
 # In[ ]:
 
 
-x(my_dict)
+
 
