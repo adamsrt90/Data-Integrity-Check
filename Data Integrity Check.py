@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[1]:
+# In[ ]:
 
 
-import itertools, string, os, random, tempfile
+import itertools, string, os, uuid
 import pandas as pd
 from dataclasses import dataclass
 from difflib import SequenceMatcher
 from multiprocessing import Process
 
 
-# In[2]:
+# In[ ]:
 
 
 @dataclass
@@ -152,10 +152,10 @@ class DataIntegrity:
             return e
     
     def save_comparison(self):
-        tf = tempfile.NamedTemporaryFile()
+        tf = str(uuid.uuid4().hex)
         tdf = pd.DataFrame(self.potential_similar)
-        tdf.to_excel(f'{tf.name}.xlsx', index = False)
-        print(f'Your file is saved as {tf.name}.xlsx')
+        tdf.to_excel(f'{tf}.xlsx', index = False)
+        print(f'Your file is saved as {tf}.xlsx')
 
 
 # In[ ]:
@@ -171,7 +171,7 @@ if __name__ == "__main__":
 # In[ ]:
 
 
-
+a.save_comparison()
 
 
 # In[ ]:
