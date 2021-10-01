@@ -145,7 +145,7 @@ class DataIntegrity:
                         s = SequenceMatcher(None, a.upper(), b.upper())
                         if s.ratio() >= percentage:
                             print(f'{a} compared to {b} is {s.ratio()}')
-                            self.potential_similar.append((a,b, s.ratio))
+                            self.potential_similar.append((a,b, s.ratio()))
                     else:
                         pass
         except Exception as e:
@@ -158,7 +158,7 @@ class DataIntegrity:
         print(f'Your file is saved as {tf}.xlsx')
 
 
-# In[3]:
+# In[ ]:
 
 
 if __name__ == "__main__":
