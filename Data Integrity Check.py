@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import itertools, string, os, uuid
@@ -11,7 +11,7 @@ from difflib import SequenceMatcher
 from multiprocessing import Process
 
 
-# In[ ]:
+# In[2]:
 
 
 @dataclass
@@ -145,7 +145,7 @@ class DataIntegrity:
                         s = SequenceMatcher(None, a.upper(), b.upper())
                         if s.ratio() >= percentage:
                             print(f'{a} compared to {b} is {s.ratio()}')
-                            self.potential_similar.append(a)
+                            self.potential_similar.append((a,b, s.ratio))
                     else:
                         pass
         except Exception as e:
@@ -158,7 +158,7 @@ class DataIntegrity:
         print(f'Your file is saved as {tf}.xlsx')
 
 
-# In[ ]:
+# In[3]:
 
 
 if __name__ == "__main__":
@@ -166,12 +166,13 @@ if __name__ == "__main__":
     a.load_data('Doctors_Clean.xlsx')
     a.clean_data("Full Name", check_honorifics = True)
     a.comparison(5, .9, "Full Name")
+    a.save_comparison()
 
 
 # In[ ]:
 
 
-a.save_comparison()
+
 
 
 # In[ ]:
